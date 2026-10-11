@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -9,7 +10,9 @@ import { authClient } from "@/lib/auth-client";
 export default function AuthActions() {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const user = session?.user;
 
@@ -22,10 +25,11 @@ export default function AuthActions() {
       const result = await authClient.signOut();
 
       if (result.error) {
-        toast.error(result.error.message || "Sign out করা যায়নি");
+        toast.error(result.error.message || "Sign Out করা যায়নি");
         return;
       }
 
+      setIsOpen(false);
       toast.success("সফলভাবে Sign Out হয়েছে!");
       router.push("/");
       router.refresh();
@@ -37,85 +41,107 @@ export default function AuthActions() {
   }
 
   if (isPending) {
-    return <span className="loading loading-spinner loading-sm" />;
+    return (
+      <span className="loading loading-spinner loading-sm text-emerald-700" />
+    );
   }
 
   if (!user) {
     return (
       <div className="flex items-center gap-2">
-        <Link href="/signin" className="btn btn-outline btn-sm">
-          Sign In
+        <Link
+          href="/signin"
+          className="btn btn-sm border-emerald-600 bg-white text-emerald-700 hover:bg-emerald-50"
+        >
+          সাইন ইন
         </Link>
 
         <Link
           href="/signup"
           className="btn btn-sm border-0 bg-emerald-700 text-white hover:bg-emerald-800"
         >
-          Sign Up
+          সাইন আপ
         </Link>
       </div>
     );
   }
 
+  const displayName = user.name || "User";
+  const initial = displayName.charAt(0).toUpperCase();
+
   return (
-    <div className="dropdown dropdown-end">
+    <div className="relative">
+      {/* শুধু এই বাটনটি Navbar-এ দেখা যাবে */}
       <button
         type="button"
-        tabIndex={0}
-        className="btn btn-ghost flex h-auto gap-2 px-2"
+        onClick={() => setIsOpen((previous) => !previous)}
+        aria-expanded={isOpen}
+        aria-label="Profile menu"
+        className="flex items-center gap-2 rounded-xl px-2 py-1.5 transition hover:bg-emerald-50"
       >
-        <div className="avatar placeholder">
-          <div className="w-10 rounded-full bg-emerald-100 text-emerald-800">
-            <span className="text-lg font-bold">
-              {(user.name || user.email || "U")
-                .charAt(0)
-                .toUpperCase()}
-            </span>
-          </div>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-100 font-bold text-emerald-800">
+          {initial}
         </div>
 
-        <div className="hidden text-left sm:block">
-          <p className="max-w-32 truncate text-sm font-semibold text-gray-800">
-            {user.name || "User"}
+        <div className="hidden max-w-36 text-left sm:block">
+          <p className="truncate text-sm font-semibold text-gray-800">
+            {displayName}
           </p>
-          <p className="max-w-32 truncate text-xs text-gray-500">
+          <p className="truncate text-xs text-gray-500">
             {user.email}
           </p>
         </div>
 
-        <span className="text-gray-500">⌄</span>
+        <span className="text-sm text-gray-500">
+          {isOpen ? "▲" : "▼"}
+        </span>
       </button>
 
-      <ul
-        tabIndex={0}
-        className="dropdown-content menu z-50 mt-3 w-64 rounded-xl border border-emerald-100 bg-white p-3 shadow-lg"
-      >
-        <li className="menu-title">
-          <span>আপনার অ্যাকাউন্ট</span>
-        </li>
-
-        <li className="mb-2">
-          <div className="pointer-events-none flex flex-col items-start gap-1">
-            <span className="font-semibold text-gray-800">
-              {user.name || "User"}
-            </span>
-            <span className="break-all text-xs text-gray-500">
-              {user.email}
-            </span>
-          </div>
-        </li>
-
-        <li>
+      {/* ক্লিক করলেই শুধু তখন dropdown দেখা যাবে */}
+      {isOpen && (
+        <>
           <button
             type="button"
-            onClick={handleSignOut}
-            disabled={loading}
-            className="text-red-600 hover:bg-red-50"
-          >
-            {loading ? "Sign Out হচ্ছে..." : "Sign Out"}
-          </button>
-        </li>
-      </ul>
+            aria-label="Close profile menu"
+            onClick={() => setIsOpen(false)}
+            className="fixed inset-0 z-40 cursor-default"
+          />
+
+          <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border border-emerald-100 bg-white shadow-xl">
+            <div className="border-b border-gray-100 px-4 py-3">
+              <p className="truncate text-sm font-semibold text-gray-800">
+                {displayName}
+              </p>
+              <p className="break-all text-xs text-gray-500">
+                {user.email}
+              </p>
+            </div>
+
+            <div className="p-2">
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-gray-700 transition hover:bg-emerald-50 hover:text-emerald-800"
+              >
+                <span>👤</span>
+                <span>Profile Update</span>
+              </Link>
+
+              <button
+                type="button"
+                onClick={handleSignOut}
+                disabled={loading}
+                className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm text-red-600 transition hover:bg-red-50 disabled:opacity-50"
+              >
+                <span>↪</span>
+                <span>
+                  {loading ? "Sign Out হচ্ছে..." : "Sign Out"}
+                </span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
