@@ -4,6 +4,7 @@ import Navbar from "@/components/shared/Navbar";
 import PriceMarqueeWrapper from "@/components/shared/PriceMarqueeWrapper";
 import ToasterProvider from "@/components/shared/ToasterProvider";
 import "./globals.css";
+import Footer from "@/components/shared/Footer";
 
 export const metadata = {
   title: "বাজার দর",
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         </Suspense>
 
         <main>{children}</main>
+        <Footer></Footer>
       </body>
     </html>
   );
