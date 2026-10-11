@@ -21,7 +21,6 @@ export default function CategoryNavLinks({ categories = [] }) {
 
   return (
     <nav className="relative" aria-label="প্রধান নেভিগেশন">
-      {/* Desktop Navigation */}
       <div className="hidden items-center gap-2 overflow-x-auto py-2 md:flex">
         {links.map((item) => (
           <Link
@@ -46,7 +45,6 @@ export default function CategoryNavLinks({ categories = [] }) {
         ))}
       </div>
 
-      {/* Mobile Navigation */}
       <div className="py-2 md:hidden">
         <button
           type="button"

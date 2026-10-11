@@ -120,7 +120,6 @@ async function ProductDetailsContent({ slug }) {
         </Link>
 
         <section className="overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm">
-          {/* Product information */}
           <div className="border-b border-gray-100 bg-emerald-50/70 p-5 sm:p-10">
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
               <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-white text-5xl shadow-sm">
@@ -165,7 +164,6 @@ async function ProductDetailsContent({ slug }) {
             </div>
           </div>
 
-          {/* Price summary */}
           <div className="p-5 sm:p-8">
             <h2 className="mb-5 text-xl font-extrabold text-gray-900">
               বাজারদরের সারসংক্ষেপ
@@ -191,7 +189,6 @@ async function ProductDetailsContent({ slug }) {
               />
             </div>
 
-            {/* Market-wise prices */}
             <div className="mt-10">
               <h2 className="mb-5 text-xl font-extrabold text-gray-900">
                 🏪 বাজারভিত্তিক দাম

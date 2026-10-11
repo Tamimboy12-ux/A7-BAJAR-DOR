@@ -69,7 +69,6 @@ function SectionHeading({ eyebrow, title, description, icon }) {
 }
 
 export default async function ProductsSection() {
-  // Next.js-কে জানানো হচ্ছে যে এই অংশটি request-এর সময় render হবে।
   await connection();
 
   const products = await getProducts();

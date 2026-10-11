@@ -54,7 +54,6 @@ function CategorySkeleton() {
 }
 
 async function CategoryContent({ params }) {
-  // Next.js Cache Components: dynamic work starts after this point.
   await connection();
 
   const { slug } = await params;

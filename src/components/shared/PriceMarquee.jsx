@@ -41,7 +41,6 @@ export default async function PriceMarquee() {
     );
   }
 
-  // Animation চালু রাখার জন্য প্রোডাক্ট দুবার দেখানো হচ্ছে।
   const items = [...products, ...products];
 
   return (

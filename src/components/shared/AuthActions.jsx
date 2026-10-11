@@ -71,7 +71,6 @@ export default function AuthActions() {
 
   return (
     <div className="relative">
-      {/* শুধু এই বাটনটি Navbar-এ দেখা যাবে */}
       <button
         type="button"
         onClick={() => setIsOpen((previous) => !previous)}
@@ -97,7 +96,6 @@ export default function AuthActions() {
         </span>
       </button>
 
-      {/* ক্লিক করলেই শুধু তখন dropdown দেখা যাবে */}
       {isOpen && (
         <>
           <button

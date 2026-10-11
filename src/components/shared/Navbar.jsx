@@ -76,7 +76,6 @@ export default async function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-100 bg-white shadow-sm">
-      {/* Logo, date and authentication */}
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2">
           <span className="text-3xl" aria-hidden="true">
@@ -99,7 +98,6 @@ export default async function Navbar() {
         </div>
       </div>
 
-      {/* Category navigation */}
       <div className="border-t border-gray-100">
         <div className="mx-auto max-w-6xl px-4">
           <CategoryNavLinks categories={categories} />

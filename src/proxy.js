@@ -5,10 +5,8 @@ import { getSessionCookie } from "better-auth/cookies";
 export function proxy(request) {
   const { pathname, search } = request.nextUrl;
 
-  // Better Auth session cookie check
   const sessionCookie = getSessionCookie(request);
 
-  // Login required pages
   const protectedRoutes = [
     "/product",
     "/profile",
@@ -19,11 +17,9 @@ export function proxy(request) {
       pathname === route || pathname.startsWith(`${route}/`)
   );
 
-  // Login না থাকলে Sign In page-এ পাঠানো
   if (isProtectedRoute && !sessionCookie) {
     const signInUrl = new URL("/signin", request.url);
 
-    // Login করার পরে আগের পেজে ফেরার URL
     signInUrl.searchParams.set(
       "callbackURL",
       `${pathname}${search}`
