@@ -1,4 +1,6 @@
 
+import Link from "next/link";
+
 const API_URL = "https://api.api-store.workers.dev/api/bazardor";
 
 async function getProducts() {
@@ -39,7 +41,7 @@ export default async function PriceMarquee() {
     );
   }
 
-  // Content দুবার রাখলে animation শেষ হয়ে থেমে যাবে না।
+  // Animation চালু রাখার জন্য প্রোডাক্ট দুবার দেখানো হচ্ছে।
   const items = [...products, ...products];
 
   return (
@@ -60,13 +62,15 @@ export default async function PriceMarquee() {
               const isDown = direction === "down";
 
               return (
-                <div
+                <Link
                   key={`${product.id || product.slug || product.nameBn}-${index}`}
-                  className="flex shrink-0 items-center gap-2 px-5 text-sm"
+                  href={`/product/${product.slug || product.id}`}
+                  className="flex shrink-0 items-center gap-2 px-5 text-sm transition hover:bg-emerald-700/60"
+                  aria-label={`${product.nameBn || product.name} এর বিস্তারিত দেখুন`}
                 >
                   <span>{product.image || "🛒"}</span>
 
-                  <span className="font-medium">
+                  <span className="font-medium underline-offset-4 hover:underline">
                     {product.nameBn || product.name}
                   </span>
 
@@ -91,7 +95,7 @@ export default async function PriceMarquee() {
                   )}
 
                   <span className="ml-3 text-emerald-400">◆</span>
-                </div>
+                </Link>
               );
             })}
           </div>
