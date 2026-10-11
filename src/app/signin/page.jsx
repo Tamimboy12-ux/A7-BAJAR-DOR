@@ -43,23 +43,16 @@ export default function SignInPage() {
     }
   }
 
-  async function handleSocialSignIn(provider) {
-    setSocialLoading(provider);
+  const handleGoogle = async () => {
+    await authClient.signIn.social({
+        provider: "google",
+    });
+  }
 
-    try {
-      const result = await authClient.signIn.social({
-        provider,
-        callbackURL: "/",
-      });
-
-      if (result?.error) {
-        toast.error(result.error.message || "Social login ব্যর্থ হয়েছে");
-        setSocialLoading("");
-      }
-    } catch (error) {
-      toast.error(error.message || "Social login ব্যর্থ হয়েছে");
-      setSocialLoading("");
-    }
+  const handleGithub = async () => {
+    await authClient.signIn.social({
+        provider: "github",
+    });
   }
 
   return (
@@ -127,24 +120,18 @@ export default function SignInPage() {
         <div className="space-y-3">
           <button
             type="button"
-            disabled={loading || Boolean(socialLoading)}
-            onClick={() => handleSocialSignIn("google")}
+            onClick={handleGoogle}
             className="btn btn-outline w-full"
           >
-            {socialLoading === "google"
-              ? "Google-এ যাচ্ছেন..."
-              : "Google দিয়ে চালিয়ে যান"}
+            Google দিয়ে চালিয়ে যান
           </button>
 
           <button
             type="button"
-            disabled={loading || Boolean(socialLoading)}
-            onClick={() => handleSocialSignIn("github")}
+            onClick={handleGithub}
             className="btn btn-outline w-full"
           >
-            {socialLoading === "github"
-              ? "GitHub-এ যাচ্ছেন..."
-              : "GitHub দিয়ে চালিয়ে যান"}
+            GitHub দিয়ে চালিয়ে যান
           </button>
         </div>
 
