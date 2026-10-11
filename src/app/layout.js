@@ -1,7 +1,7 @@
 
 import { Suspense } from "react";
 import Navbar from "@/components/shared/Navbar";
-import PriceMarquee from "@/components/shared/PriceMarquee";
+import PriceMarqueeWrapper from "@/components/shared/PriceMarqueeWrapper";
 import ToasterProvider from "@/components/shared/ToasterProvider";
 import "./globals.css";
 
@@ -28,14 +28,8 @@ export default function RootLayout({ children }) {
           <Navbar />
         </Suspense>
 
-        <Suspense
-          fallback={
-            <div className="bg-emerald-700 px-4 py-3 text-white">
-              বাজারদর লোড হচ্ছে...
-            </div>
-          }
-        >
-          <PriceMarquee />
+        <Suspense fallback={null}>
+          <PriceMarqueeWrapper />
         </Suspense>
 
         <main>{children}</main>

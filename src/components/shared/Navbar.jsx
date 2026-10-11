@@ -2,6 +2,7 @@
 import { connection } from "next/server";
 import Link from "next/link";
 import CategoryNavLinks from "./CategoryNavLinks";
+import AuthActions from "./AuthActions";
 
 const API_URL = "https://api.api-store.workers.dev/api/bazardor";
 
@@ -42,8 +43,7 @@ async function getCategories() {
       if (!categories.has(product.category)) {
         categories.set(product.category, {
           slug: product.category,
-          nameBn:
-            product.categoryNameBn || product.category,
+          nameBn: product.categoryNameBn || product.category,
           categoryIcon: product.categoryIcon || "🛒",
         });
       }
@@ -69,7 +69,6 @@ function getBanglaDate() {
 }
 
 export default async function Navbar() {
-  // Request-এর সময় date তৈরি হবে, prerender-এর সময় নয়।
   await connection();
 
   const categories = await getCategories();
@@ -77,12 +76,9 @@ export default async function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-100 bg-white shadow-sm">
-      {/* Logo, date and authentication links */}
+      {/* Logo, date and authentication */}
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
-        <Link
-          href="/"
-          className="flex shrink-0 items-center gap-2"
-        >
+        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-2">
           <span className="text-3xl" aria-hidden="true">
             🛒
           </span>
@@ -98,20 +94,8 @@ export default async function Navbar() {
           </div>
         </Link>
 
-        <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href="/signin"
-            className="btn btn-sm border-emerald-600 bg-white text-emerald-700 hover:bg-emerald-50"
-          >
-            সাইন ইন
-          </Link>
-
-          <Link
-            href="/signup"
-            className="btn btn-sm border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-800"
-          >
-            সাইন আপ
-          </Link>
+        <div className="flex shrink-0 items-center">
+          <AuthActions />
         </div>
       </div>
 

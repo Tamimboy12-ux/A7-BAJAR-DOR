@@ -1,3 +1,5 @@
+
+import { connection } from "next/server";
 import ProductCard from "@/components/home/ProductCard";
 
 const API_URL = "https://api.api-store.workers.dev/api/bazardor";
@@ -19,7 +21,7 @@ async function getProducts() {
       ? result
       : result.data || result.products || [];
 
-    return products;
+    return Array.isArray(products) ? products : [];
   } catch (error) {
     console.error("Products fetch error:", error);
     return [];
@@ -67,6 +69,9 @@ function SectionHeading({ eyebrow, title, description, icon }) {
 }
 
 export default async function ProductsSection() {
+  // Next.js-কে জানানো হচ্ছে যে এই অংশটি request-এর সময় render হবে।
+  await connection();
+
   const products = await getProducts();
 
   // যেসব পণ্যের দাম বেড়েছে
@@ -74,7 +79,8 @@ export default async function ProductsSection() {
     .filter((product) => product.change?.dir === "up")
     .sort(
       (a, b) =>
-        Number(b.change?.pct || 0) - Number(a.change?.pct || 0)
+        Number(b.change?.pct || 0) -
+        Number(a.change?.pct || 0)
     );
 
   // যেসব পণ্যের দাম কমেছে
@@ -82,7 +88,8 @@ export default async function ProductsSection() {
     .filter((product) => product.change?.dir === "down")
     .sort(
       (a, b) =>
-        Number(a.change?.pct || 0) - Number(b.change?.pct || 0)
+        Number(a.change?.pct || 0) -
+        Number(b.change?.pct || 0)
     );
 
   return (
